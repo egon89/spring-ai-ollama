@@ -1,6 +1,7 @@
 package com.egon.spring_ai_ollama.controller;
 
 import com.egon.spring_ai_ollama.dtos.CountryInfo;
+import com.egon.spring_ai_ollama.services.ChatClientService;
 import com.egon.spring_ai_ollama.services.ChatService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +15,11 @@ import java.util.Map;
 public class ChatController {
 
   private final ChatService chatService;
+  private final ChatClientService chatClientService;
 
-  public ChatController(ChatService chatService) {
+  public ChatController(ChatService chatService, ChatClientService chatClientService) {
     this.chatService = chatService;
+    this.chatClientService = chatClientService;
   }
 
   @GetMapping("/generate")
@@ -26,11 +29,14 @@ public class ChatController {
 
 
   @GetMapping(
-      value = "/generate-stream",
+      value = "/{chatId}/stream",
       produces = MediaType.TEXT_EVENT_STREAM_VALUE
   )
-  public Flux<String> generateStream(@RequestParam(value = "message", defaultValue = "Give me a medium length poem") String message) {
-    return this.chatService.streamGenerate(message);
+  public Flux<String> streamChat(
+      @PathVariable String chatId,
+      @RequestParam(value = "message", defaultValue = "Give me a medium length poem") String message
+  ) {
+    return this.chatClientService.streamChat(chatId, message);
   }
 
   @GetMapping("/country/{name}")
