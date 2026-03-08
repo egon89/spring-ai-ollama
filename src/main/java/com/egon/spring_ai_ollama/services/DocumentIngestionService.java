@@ -47,6 +47,6 @@ public class DocumentIngestionService {
 
     var file = ProcessedFile.of(documentId, path.getFileName().toString(), checksum, Instant.now());
 
-    // repository.save(file);
+    repository.save(file);
   }
 }
