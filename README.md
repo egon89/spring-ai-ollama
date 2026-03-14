@@ -69,5 +69,17 @@ Advisors act like an interception pipeline:
 - **Native**: Only with Chat Client (e.g., `MessageChatMemoryAdvisor`).
 - **Chat Model**: Manual—fetch/add to `ChatMemory`, build prompts yourself.
 
+## Tool Calling
+The `returnDirect=true` flag indicates that the output of this tool should be returned **directly to the user**, 
+rather than being processed further by the chat model. This is useful for tools that provide final answers or 
+results that don't require additional context or formatting.
+```java
+@Tool(description = "Trade stocks.Example usage: 'Buy 100 shares of AAPL at market price'", returnDirect = true)
+String tradeStocks(
+    @ToolParam(description = "The stock symbol, e.g. AAPL") String stockSymbol,
+    @ToolParam(description = "The number of shares to trade") int quantity,
+    @ToolParam(description = "The type of trade, e.g. 'buy' or 'sell'") String tradeType) {}
+```
+
 ## Ollama
 To run Ollama with Docker, you can use this repository: [egon89/docker-mono-repo](https://github.com/egon89/docker-mono-repo/tree/main/ollama)
