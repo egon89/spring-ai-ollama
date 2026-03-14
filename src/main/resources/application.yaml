@@ -22,4 +22,4 @@ logging:
     com.egon: INFO
 
 rag:
-  documents-path: /home/everton/Documents/mcp-context
+  documents-path: /tmp/documents
