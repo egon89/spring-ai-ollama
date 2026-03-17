@@ -27,10 +27,8 @@ public class ChatConfig {
   public ChatClient chatClientWithVectorStore(OllamaChatModel chatModel, VectorStore vectorStore, SyncMcpToolCallbackProvider tools) {
     logSyncMcpProvider(tools);
 
-    return ChatClient.builder(chatModel)
-        .defaultSystem(defaultSystem())
+    return chatClientBuilderWithTools(chatModel, tools)
         .defaultAdvisors(QuestionAnswerAdvisor.builder(vectorStore).build())
-        .defaultToolCallbacks(ChatConfig::defaultTools, tools)
         .build();
   }
 
@@ -45,10 +43,7 @@ public class ChatConfig {
   ) {
     logSyncMcpProvider(tools);
 
-    return ChatClient.builder(chatModel)
-        .defaultSystem(defaultSystem())
-        .defaultToolCallbacks(ChatConfig::defaultTools, tools)
-        .build();
+    return chatClientBuilderWithTools(chatModel, tools).build();
   }
 
   private static ToolCallback[] defaultTools() {
@@ -60,6 +55,14 @@ public class ChatConfig {
       The filesystem tool must use the '/data' directory for all file operations.
       When asked to read or write a file, you should use the '/data' directory.
     """;
+  }
+
+  private ChatClient.Builder chatClientBuilderWithTools(OllamaChatModel chatModel, SyncMcpToolCallbackProvider tools) {
+    logSyncMcpProvider(tools);
+
+    return ChatClient.builder(chatModel)
+        .defaultSystem(defaultSystem())
+        .defaultToolCallbacks(ChatConfig::defaultTools, tools);
   }
 
   private void logSyncMcpProvider(SyncMcpToolCallbackProvider provider) {
