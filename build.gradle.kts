@@ -41,6 +41,13 @@ dependencyManagement {
 	}
 }
 
+tasks.named<org.springframework.boot.gradle.tasks.run.BootRun>("bootRun") {
+	doFirst {
+		println("DB_URL from env: ${environment["DB_URL"]}")
+		println("OLLAMA_HOST from env: ${environment["OLLAMA_HOST"]}")
+	}
+}
+
 tasks.withType<Test> {
 	useJUnitPlatform()
 }

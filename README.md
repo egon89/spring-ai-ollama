@@ -23,10 +23,24 @@ To run the MCP server, you can use the following gradle command:
 ./gradlew bootRun
 ```
 
-### Liquibase
-The application uses Liquibase for database migrations. The changelog files are located in `src/main/resources/db/changelog`.
-The application will automatically run the migrations on startup in the `pgvectordb` database
-that was created by the PostgreSQL PGVector Docker container.
+### Application
+Create a `.env` file based on the `.env.example` and fill with the appropriate values for your environment:
+```bash
+cp .env.example .env
+```
+
+To run the application, you can use the make command that will set the environment variables from the
+`.env` file and run the application using gradle:
+```bash
+make run
+```
+
+Another option is using the command:
+```bash
+export $(grep -v '^#' .env | xargs) && ./gradlew bootRun
+```
+
+![Application](src/main/resources/static/images/application-startup.png)
 
 ---
 
@@ -58,3 +72,13 @@ This example demonstrates the response considering the document `resources/rag-d
 The application includes a custom MCP tool that allows the AI to interact with the filesystem.
 
 ![Filesystem MCP Tool](src/main/resources/static/images/list-files.gif)
+
+### Finance Control MCP Tool
+The application includes a custom MCP tool that allows the AI to interact with the finance control MCP server:
+
+![Finance Control MCP Tool](src/main/resources/static/images/finance-control-mcp-server.png)
+
+### Liquibase
+The application uses Liquibase for database migrations. The changelog files are located in `src/main/resources/db/changelog`.
+The application will automatically run the migrations on startup in the `pgvectordb` database
+that was created by the PostgreSQL PGVector Docker container.
